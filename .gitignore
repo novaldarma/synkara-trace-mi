@@ -1,0 +1,36 @@
+﻿# Data sumber dan hasil persiapan lokal
+imports/raw/
+imports/prepared/
+
+# API key dan konfigurasi rahasia
+.env
+.env.*
+!.env.example
+
+# Hasil instalasi dan build
+node_modules/
+dist/
+coverage/
+.vercel/
+
+# File sementara Python dan Supabase
+.venv/
+__pycache__/
+*.py[cod]
+supabase/.temp/
+
+# Log sistem
+*.log
+.DS_Store
+Thumbs.db
+.vercel
+
+# Local patch backups
+*.BEFORE_*
+*.GATE8_BACKUP
+*.BACKUP
+
+# Local patch backups
+*.BEFORE_*
+*.GATE8_BACKUP
+*.GATE8_BACKUP

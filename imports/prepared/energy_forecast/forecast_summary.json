@@ -1,0 +1,137 @@
+{
+  "model_version": "baseline_15min_four_steps_v1",
+  "generated_at_utc": "2026-09-30T10:17:48.589705+00:00",
+  "dataset_id": "uci_steel_industry_2018_external",
+  "source_id": "uci_steel_source_ca0620f2dea57ed143200182b5c0fd31647afdf3ffae194f96f5c4c4f09293c3",
+  "prepared_energy_sha256": "c9f41024903ce52f089c2b07e006bd4820bb3a5e255e43a658d6967a38fe0b0a",
+  "source_kind": "external_UCI_South_Korea_steel_2018_not_chemical_plant",
+  "time_policy": "source order; shifted 00:00 timestamp is documented inference",
+  "interval_usage_assumption": "Usage_kWh treated as kWh for each consecutive 15-minute reading; measurement interval boundary and meter semantics require source confirmation",
+  "split_policy": "chronological_by_sequence; no shuffle; four targets wholly inside split",
+  "split_sequence_index_inclusive": {
+    "train_reference_no_parameters_fitted": [
+      1,
+      24480
+    ],
+    "validation_targets": [
+      24481,
+      29760
+    ],
+    "test_targets": [
+      29761,
+      35040
+    ]
+  },
+  "horizon_intervals_minutes": [
+    15,
+    30,
+    45,
+    60
+  ],
+  "past_usage_window_readings": 96,
+  "allowed_forecast_features": [
+    "past_Usage_kWh_only"
+  ],
+  "forbidden_target_time_features": [
+    "future_Usage_kWh",
+    "CO2",
+    "power_factors",
+    "Load_Type"
+  ],
+  "validation_baselines": {
+    "last_observation": {
+      "cutoff_count": 5277,
+      "evaluated_interval_predictions": 21108,
+      "mae_kwh_per_interval_all_horizons": 9.174592,
+      "mae_kwh_by_horizon_15_30_45_60_minutes": [
+        5.759261,
+        8.177248,
+        10.376291,
+        12.385568
+      ],
+      "mean_absolute_one_hour_total_error_kwh": 33.269234,
+      "four_interval_total_absolute_error_distribution_kwh": {
+        "median": 1.98,
+        "p90": 115.01,
+        "p95": 171.988,
+        "p99": 269.6544,
+        "maximum": 430.67
+      },
+      "overlapping_windows_disclosure": "All eligible 15-minute cutoffs are evaluated; their four target windows overlap. Each target may contribute to several horizon errors."
+    },
+    "same_time_previous_day": {
+      "cutoff_count": 5277,
+      "evaluated_interval_predictions": 21108,
+      "mae_kwh_per_interval_all_horizons": 15.273407,
+      "mae_kwh_by_horizon_15_30_45_60_minutes": [
+        15.273396,
+        15.273403,
+        15.273403,
+        15.273424
+      ],
+      "mean_absolute_one_hour_total_error_kwh": 57.225876,
+      "four_interval_total_absolute_error_distribution_kwh": {
+        "median": 5.13,
+        "p90": 189.998,
+        "p95": 235.16,
+        "p99": 393.6024,
+        "maximum": 442.88
+      },
+      "overlapping_windows_disclosure": "All eligible 15-minute cutoffs are evaluated; their four target windows overlap. Each target may contribute to several horizon errors."
+    }
+  },
+  "selection_metric": "validation_mae_kwh_per_interval_all_horizons",
+  "selection_tie_break": "last_observation_first",
+  "selected_baseline": "last_observation",
+  "test_baselines": {
+    "last_observation": {
+      "cutoff_count": 5277,
+      "evaluated_interval_predictions": 21108,
+      "mae_kwh_per_interval_all_horizons": 8.34096,
+      "mae_kwh_by_horizon_15_30_45_60_minutes": [
+        4.995526,
+        7.308255,
+        9.513341,
+        11.546718
+      ],
+      "mean_absolute_one_hour_total_error_kwh": 30.715914,
+      "four_interval_total_absolute_error_distribution_kwh": {
+        "median": 2.43,
+        "p90": 108.634,
+        "p95": 156.916,
+        "p99": 253.6376,
+        "maximum": 485.53
+      },
+      "overlapping_windows_disclosure": "All eligible 15-minute cutoffs are evaluated; their four target windows overlap. Each target may contribute to several horizon errors."
+    },
+    "same_time_previous_day": {
+      "cutoff_count": 5277,
+      "evaluated_interval_predictions": 21108,
+      "mae_kwh_per_interval_all_horizons": 14.371798,
+      "mae_kwh_by_horizon_15_30_45_60_minutes": [
+        14.371626,
+        14.371736,
+        14.37187,
+        14.371959
+      ],
+      "mean_absolute_one_hour_total_error_kwh": 54.276125,
+      "four_interval_total_absolute_error_distribution_kwh": {
+        "median": 6.48,
+        "p90": 186.622,
+        "p95": 232.708,
+        "p99": 350.4484,
+        "maximum": 451.92
+      },
+      "overlapping_windows_disclosure": "All eligible 15-minute cutoffs are evaluated; their four target windows overlap. Each target may contribute to several horizon errors."
+    }
+  },
+  "test_cutoff_count": 5277,
+  "test_cutoff_sequence_index_inclusive": [
+    29760,
+    35036
+  ],
+  "result_files": {
+    "test_predictions.jsonl": "14ca38d0d5a8b3f67eda05b767f818edc25fc50e48858386c06f61cc3b8395b8",
+    "test_holdout_evaluations.jsonl": "8c15bd68847e5e1535187689f467c7f7224ec51a0d6cc56593fdcef7023c2b34"
+  }
+}

@@ -1,0 +1,33 @@
+.investigate-page .dashboard-title { margin-bottom: 18px; }
+.investigate-page .dashboard-title h1 { max-width: 24ch; }
+.investigate-page .panel { margin-top: 16px; }
+.investigate-page .incident-list { gap: 9px; }
+.investigate-page .incident-card { padding: 15px 18px; }
+.investigate-page .incident-values strong { font-size: 1.13rem; }
+.investigate-page .investigate-filter-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+.investigate-page .investigate-clear { background: transparent; border: 0; padding: 10px 12px; color: var(--brand); font: inherit; font-weight: 700; cursor: pointer; }
+.investigate-page .investigate-clear:hover { text-decoration: underline; }
+.investigate-page .investigate-weekly-preview { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 16px 0; }
+.investigate-page .investigate-weekly-preview div { display: grid; gap: 6px; border: 1px solid var(--line); border-radius: 8px; padding: 13px; background: #f7fbfa; }
+.investigate-page .investigate-weekly-preview time { font-size: .81rem; color: var(--muted); }
+.investigate-page .investigate-weekly-preview strong { font-size: 1rem; }
+.investigate-page .investigate-weekly-preview small { color: var(--muted); line-height: 1.4; }
+.investigate-page .investigate-hourly-preview { border-left: 3px solid var(--brand); background: #f0f7f5; padding: 12px 15px; border-radius: 6px; }
+.investigate-page .investigate-hourly-preview p { margin: 7px 0 0; overflow-wrap: anywhere; }
+.investigate-page .investigate-case-intro { background: #f0f7f5; border-color: #c7ddd6; }
+.investigate-page .investigate-case-intro h2 { margin-bottom: 8px; }
+.investigate-page .investigate-case-intro .investigate-boundary { margin-bottom: 0; color: #35565b; font-size: .88rem; }
+.investigate-page .investigate-evidence-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 15px; }
+.investigate-page .investigate-evidence-row article { padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.investigate-page .investigate-evidence-row h3 { margin: 0 0 9px; font-size: .98rem; }
+.investigate-page .investigate-evidence-row p { margin: 0; font-size: .86rem; line-height: 1.5; }
+.investigate-page .investigate-evidence-row small { display: block; margin-top: 9px; color: var(--muted); }
+.investigate-page .investigate-source-links { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 14px; align-items: center; }
+.investigate-page .investigate-similar-tier { display: inline-block; color: #285b59; background: #e8f4f1; padding: 3px 7px; border-radius: 5px; font-size: .77rem; font-weight: 700; }
+.investigate-page .investigate-rca-summary { background: #f2f6f7; border-left: 3px solid #668694; border-radius: 6px; padding: 12px 16px; }
+.investigate-page .investigate-rca-summary p { margin: 5px 0; }
+.investigate-page .investigate-rca-slides { margin-top: 16px; }
+.investigate-page .investigate-rca-slides > summary { cursor: pointer; color: var(--brand); font-weight: 700; }
+.investigate-page :is(button, a, summary, input, select):focus-visible { outline: 3px solid #166b69; outline-offset: 3px; }
+@media(max-width: 850px) { .investigate-page .investigate-evidence-row { grid-template-columns: 1fr; } }
+@media(max-width: 660px) { .investigate-page .investigate-weekly-preview { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
