@@ -33,3 +33,10 @@ The shared account can change the optional *View guide* between judge walkthroug
 Run `python scripts/validate_data.py`, `python scripts/verify_prototype.py`, `npm run build`, and `node --check api/assistant.js`. Read `docs/DEPLOYMENT_READINESS.md` for the separate live checklist. Source validation and a successful frontend build do not prove your remote migration state, authorized response from an AI provider, or saved actions in the actual Supabase project.
 
 The supplied observations are historical. Condition History is weekly, Production is hourly, and UCI steel energy is from South Korea in 2018. The UCI source cannot be interpreted as a chemical plant meter. Five RCA documents have 55 slides pending individual visual checks. The incident portfolio is 380 source rows across 12 plant labels, while detailed condition and Production observations cover only five assets. Any time saved or business impact must be measured in a controlled validation exercise before being reported as a result. Read `docs/GATE6_VERIFICATION.md` and `docs/DEPLOYMENT_READINESS.md` for exact checks and remaining deployed verification.
+
+## Judge Access
+
+TRACE-MI requires an authorized demo account.
+
+Demo email and password are provided to evaluators through the official CALIBER submission materials. This public repository contains access instructions only and does not expose authentication credentials.
+

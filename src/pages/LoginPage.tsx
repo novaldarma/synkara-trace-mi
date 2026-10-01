@@ -335,7 +335,11 @@ export default function LoginPage() {
                   {authBusy ? "Signing in…" : "Sign in to Case 2"}
                   <ArrowIcon />
                 </button>
-              </form>
+                <div className="login-judge-note">
+    <strong>Judge access</strong>
+    <p>Enter the demo email and password provided by Team SYNKARA through the official CALIBER submission form. Access instructions are also available in the GitHub repository.</p>
+  </div>
+</form>
             )}
 
             {authMessage && (
