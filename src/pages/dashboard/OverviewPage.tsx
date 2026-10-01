@@ -415,7 +415,7 @@ export default function OverviewPage() {
             <p>It has the highest <strong>recorded actual loss</strong> among incidents matching these filters: {exactUsd(currentIncident.actual_loss_kusd)}, or {percent(currentIncident.actual_loss_kusd, totals.actual)} of the selected total.</p>
             <h3>Recommended next check</h3>
             <p>Have an engineer verify the incident classification and inspect the linked observations or RCA, if available, before proposing an owned action.</p>
-            <p className="overview-caution">Financial review cue only. RCA slides await visual review; no safety rank or physical root cause is certified.</p>
+            <p className="overview-caution">Financial review cue only. The linked RCA rendition has been visually reviewed; the supplied presentation remains the source authority. No safety rank or physical root cause is independently certified by TRACE-MI.</p>
             <details className="overview-proof"><summary>View source of this recommendation</summary>
               <p>Incident Database · row {currentIncident.source_row}. The case link opens the original incident facts and any verified document links. Selection rule: highest actual_loss_kusd; ties by source record ID. Current plant and occurrence-date filters apply.</p>
               <Link to={`/dashboard/investigation/${encodeURIComponent(currentIncident.record_id)}`}>Check row {currentIncident.source_row} and linked evidence →</Link>

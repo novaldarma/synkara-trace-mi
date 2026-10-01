@@ -5,7 +5,7 @@ function localAssistant(mode: string): Plugin {
   return { name:'local-assistant-api', apply:'serve', configureServer(server) {
     const env = loadEnv(mode, process.cwd(), '')
     // Assign only in the server process; Vite exposes only VITE_PUBLIC_ values.
-    for (const name of ['GEMINI_API_KEY','GEMINI_MODEL']) {
+    for (const name of ['TRACE_AI_PROVIDER','FIREWORKS_API_KEY','FIREWORKS_MODEL','GEMINI_API_KEY','GEMINI_MODEL']) {
       if (!process.env[name] && env[name]) process.env[name] = env[name]
     }
     process.env.SUPABASE_URL ||= env.VITE_PUBLIC_SUPABASE_URL

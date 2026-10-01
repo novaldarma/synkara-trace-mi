@@ -86,7 +86,7 @@ export default function AssistantPage() {
           <label className="assistant-question">Question<textarea required minLength={8} maxLength={800} value={question} onChange={e => setQuestion(e.target.value)} /></label>
           <button className="primary-link" type="submit" disabled={busy || (mode === 'replay' && !assetId)}>{busy ? 'Checking evidence…' : 'Analyze accessible evidence ↗'}</button>
         </form>
-        <p className="source-note">Replay enforces its cutoff. Retrospective investigations use server-side Gemini only when configured; otherwise a source-bound summary remains available. No source document is edited and no task is assigned automatically.</p>
+        <p className="source-note">Replay enforces its cutoff. Retrospective investigations use a configured server-side AI provider when available; otherwise TRACE-MI falls back to a source-bound summary. No source document is edited and no task is assigned automatically.</p>
       </section>
       {error && <p className="route-status" role="alert">{error} <Link to="/dashboard/problem-tank">Open Investigate →</Link></p>}
       {answer && <section className="panel assistant-result" aria-live="polite"><p className="scope-label">{answer.generated ? 'AI DRAFT · VERIFY BEFORE USE' : 'SOURCE-BOUND SUMMARY · NO MODEL GENERATED'}</p>

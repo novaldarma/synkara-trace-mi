@@ -485,7 +485,7 @@ def build_rca(prepared: Path, case_dir: Path,
             "rca_document_id": doc["document_id"], "asset_id": identity,
             "left_source_id": incident["source_id"], "right_source_id": doc["source_id"],
             "match_status": "verified",
-            "match_reason": "Matched source cover tag, plant, AR and occurrence date to the incident row; slide conclusions still await visual review",
+            "match_reason": "Matched source cover tag, plant, AR and occurrence date to the incident row; the team-prepared RCA rendition has been visually reviewed, while the supplied presentation remains the source authority",
             "evidence_locator": [
                 f"{incident['source_file']}:Incident Database:row:{incident['source_row']}",
                 f"{doc['source_file']}:slide:1",

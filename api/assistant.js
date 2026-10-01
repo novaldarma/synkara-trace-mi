@@ -1159,7 +1159,7 @@ export async function POST(request) {
   const timeout = setTimeout(() => controller.abort(), 45000);
   try {
     if (mode === "retrospective") {
-      const provider = process.env.TRACE_AI_PROVIDER || "gemini";
+      const provider = process.env.TRACE_AI_PROVIDER || "fireworks";
 
       let raw = null;
 
@@ -1201,7 +1201,7 @@ export async function POST(request) {
   }
 
   // Enforce causal caution server-side even if a model tries to overstate certainty.
-  const hasReviewedRcaContent = false; // This endpoint intentionally never sends RCA slide conclusions to Gemini.
+  const hasReviewedRcaContent = false; // This endpoint intentionally never sends RCA slide conclusions to the configured AI provider.
   if (!hasReviewedRcaContent) analysis.abstain = true;
   if (
     analysis.abstain &&
@@ -1215,7 +1215,7 @@ export async function POST(request) {
   return json({
     answer,
     generated,
-    provider: generated ? "gemini" : "deterministic",
+    provider: generated ? (process.env.TRACE_AI_PROVIDER || "fireworks") : "deterministic",
     model,
     mode,
     trace_ai_version: "trace-ai-v2-evidence-to-action",
