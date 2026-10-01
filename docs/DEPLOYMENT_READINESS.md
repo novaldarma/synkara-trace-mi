@@ -12,7 +12,7 @@ Integrity checks after these changes returned zero orphaned Production, Producti
 
 The security advisor still reports signed-in `SECURITY DEFINER` RPCs. These application RPCs are intentional and perform membership/ownership checks before privileged access; do not revoke them blindly. It also reports `energy_forecast_evaluations` as RLS-enabled without a direct policy; this is intentional because holdout actuals are exposed only through the guarded reveal RPC. Review future advisor findings before changing the security model.
 
-One evidence gate remains intentionally open: all 55 RCA slide records still have `visual_review_status = pending`, so `rca_actions` remains empty. Do not present extracted slide interpretation as visually verified or populate structured historical actions until the relevant PowerPoint slide has been manually reviewed.
+One structured-evidence gate remains intentionally open: all 55 RCA slide records still have `visual_review_status = pending`, so `rca_actions` remains empty. The five team PDF renditions have been visually reviewed for judge readability; this does not promote slide conclusions or historical actions into structured TRACE-MI evidence. Verify the supplied PowerPoint slide and complete the separate structured review before using an extracted finding or action in that role.
 
 ## 2. Local run and protected AI endpoint
 
@@ -23,7 +23,7 @@ The local `/api/assistant` rejects missing bearer tokens, calls Supabase Auth to
 ## 3. Five live judge journeys
 
 1. **Overview:** filter by plant/date; check totals, trend and recommended highest-recorded-loss case update together. Open the exact incident row, original loss/downtime columns, definition and issue register.
-2. **Investigate:** replay KO-3201 at 22 April 2026 without later facts; compare it with the 29 April retrospective incident. Check the prior weekly Health Status and the linked RCA's pending visual-review label. Inspect one incident without a supplied RCA.
+2. **Investigate:** replay KO-3201 at 22 April 2026 without later facts; compare it with the 29 April retrospective incident. Check the prior weekly Health Status and the linked RCA's source-authority label. Inspect one incident without a supplied RCA.
 3. **Actions:** inspect the source-linked KO-3201 draft, save and reload, accept with a reason/function/priority/due date, start, submit an *explicitly simulated or desk-review* result, verify it, and reload the URL. The shared account is not independent approval or proof of maintenance.
 4. **Energy:** choose a 2018 UCI cutoff, note four predictions, press Reveal, and open all four exact CSV sequences/`Usage_kWh` cells. Switch cutoffs during an in-flight reveal and use browser Back to verify no prior actual is attached to a new prediction. Check the Korean Energy Agency 2018 industrial price and Federal Reserve annual KRW/US$ links. US$ results describe a national benchmark, not any chemical-plant energy bill or saving. Compare cutoff 32,100 (94.92 kWh error) with a smaller-error example, the test-period MAE, and the 5,277-cutoff error distribution. A missing reveal RPC should withhold actuals.
 5. **Evidence Assistant / Explore:** ask about a selected incident through `npm run dev` and then the Vercel URL. Verify model-draft labeling, server-only key, bound facts and row/column links; inspect Production, Equipment, Incidents, RCA and Foundation pages with the source dates, units and review limits visible. Switching *View guide* changes guidance only; it never changes permissions or data.

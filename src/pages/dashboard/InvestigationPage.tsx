@@ -1328,7 +1328,7 @@ export default function InvestigationPage() {
                           <strong>Conclusion status:</strong>{" "}
                           {hasReviewedRca
                             ? "Slides marked visually reviewed; check the exact relevant slide before quoting its finding."
-                            : "Slide interpretation pending visual review; no physical root cause is certified by this dashboard."}
+                            : "The team PDF rendition was visually reviewed for judge readability; structured slide interpretation is not promoted as a certified physical root cause."}
                         </p>
                         <p>
                           <strong>Timing:</strong> post-incident material, never
@@ -1351,8 +1351,9 @@ export default function InvestigationPage() {
                           {link.evidence_locator.length
                             ? link.evidence_locator.join("; ")
                             : "Verified source identifiers"}
-                          . Document identity is verified; slide interpretation
-                          is not. Reported date: {document.reported_date_raw};
+                          . Document identity is verified; structured slide
+                          conclusions are not promoted into TRACE AI cause evidence.
+                          Reported date: {document.reported_date_raw};
                           full conclusion availability is unknown. The replay
                           excludes this RCA.
                         </p>
@@ -1364,10 +1365,11 @@ export default function InvestigationPage() {
                             slide.unread_visual_count > 0,
                         )) && (
                         <p role="status">
-                          <strong>Visual review pending.</strong> Extracted text
-                          below is a source preview, not a visually verified
-                          quotation or confirmed root cause. Check the original
-                          slide and any diagrams/tables before citing a finding.
+                          <strong>Source-authority check required.</strong> The
+                          team PDF rendition was visually reviewed for readability,
+                          but this structured extraction remains source material
+                          only. Verify the supplied presentation and exact slide
+                          before citing a finding.
                         </p>
                       )}
                       <details className="investigate-rca-slides">

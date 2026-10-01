@@ -22,7 +22,7 @@ const sourcePages = [
   { path: '/data/production', title: 'Production', scope: 'CASE 2 · FIVE ASSETS', description: 'PI Tag metadata and hourly Sheet2 source rows.' },
   { path: '/data/equipment', title: 'Equipment', scope: 'CASE 2 · FIVE ASSETS', description: 'Equipment Info, weekly Condition History, and provided summary.' },
   { path: '/data/incidents', title: 'Incidents', scope: 'CASE 2 · 12 PLANT LABELS', description: 'Incident Database rows and the original summary sheet.' },
-  { path: '/data/rca', title: 'RCA', scope: 'CASE 2 · VISUAL REVIEW PENDING', description: 'Five historical decks, team PDF renditions, and slide extracts.' },
+  { path: '/data/rca', title: 'RCA', scope: 'CASE 2 · RCA SOURCE-BOUND', description: 'Five historical decks, visually reviewed team PDF renditions, and source-bound slide extracts.' },
   { path: '/data/energy', title: 'EXTERNAL ENERGY', scope: 'UCI STEEL · 2018', description: 'Original external electricity CSV rows, kept separate from Case 2.' },
 ] as const
 

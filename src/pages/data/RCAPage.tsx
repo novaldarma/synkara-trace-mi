@@ -191,7 +191,7 @@ export default function RCAPage() {
         <h1>RCA presentations</h1>
         <p>Extracted text from the five supplied investigation decks, organized by original slide number. This is retrospective material.</p>
       </div>
-      <p className="route-status" role="status">The original presentations are the source of record. Their 55 slides have not all passed visual review. Extracted text and team PDF renditions are inspection aids; check original slide layouts and relationships before citing verified findings.</p>
+      <p className="route-status" role="status">The five team PDF renditions were visually reviewed for judge readability. The supplied presentations remain the source of record; slide extracts are source material only. Check the exact original slide before citing a finding.</p>
       {docStatus === 'loading' && <p role="status" className="route-status">Loading RCA documents…</p>}
       {docStatus === 'error' && <p role="alert" className="route-status">RCA documents could not be loaded or validated.</p>}
       {docStatus === 'ready' && documents.length === 0 && <p role="status" className="route-status">No RCA presentations are supplied to this account.</p>}
@@ -232,7 +232,7 @@ export default function RCAPage() {
           </section>
           <section className="panel" aria-labelledby="historical-action-heading">
             <h2 id="historical-action-heading">Historically documented RCA actions</h2>
-            {actions.length === 0 ? <p>No visually reviewed historical action rows have been imported. This does not mean the original presentations contain no actions.</p> :
+            {actions.length === 0 ? <p>No reviewed structured action rows have been promoted. This does not mean the original presentations contain no actions; historical RCA actions remain source material.</p> :
               <div style={frame}><table style={table}>
                 <thead><tr><th scope="col" style={header}>Slide</th><th scope="col" style={header}>Action as written</th><th scope="col" style={header}>Owner in slide</th><th scope="col" style={header}>Plan date</th><th scope="col" style={header}>Source status</th></tr></thead>
                 <tbody>{actions.map((action) => <tr key={action.historical_action_id}>
