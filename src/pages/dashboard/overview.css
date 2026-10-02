@@ -75,7 +75,7 @@
 .overview-page .overview-proof { margin-top: 17px; padding-top: 15px; border-top: 1px solid #dce6e6; color: #335d60; font-size: .78rem; }
 .overview-page .overview-proof p { line-height: 1.5; }
 .overview-page .overview-proof a { color: #00665f; }
-.overview-page .overview-analysis-link { display: inline-flex; margin-top: 16px; font-size: .82rem; font-weight: 740; }
+.overview-page .overview-reason .overview-analysis-link { display: inline-flex; margin-top: 16px; color: #00665f; font-size: .82rem; font-weight: 740; }
 
 .overview-page .overview-evidence { margin-top: 18px; padding: clamp(21px,2.5vw,29px); }
 .overview-page .overview-evidence-intro { margin: 10px 0 16px; color: #536c74; font-size: .83rem; line-height: 1.5; }
