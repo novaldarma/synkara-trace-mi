@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../../services/supabase'
+import OverviewCaseEvidence from './OverviewCaseEvidence'
 import './overview.css'
 
 type DailyIncident = {
@@ -32,12 +33,6 @@ type KpiDefinition = {
   limitations: string
 }
 type Status = 'loading' | 'ready' | 'empty' | 'error'
-type AiResponse = {
-  answer: string
-  generated: boolean
-  citations: { label: string; record_id: string; source_id: string; fields?: string[] }[]
-  limitation: string
-}
 
 const kpiCodes = [
   'case2.incident_count', 'case2.recorded_downtime_hours',
@@ -126,67 +121,6 @@ function percent(part: number, total: number) {
   if (total === 0) return '0%'
   const share = part / total * 100
   return share > 0 && share < 0.1 ? '<0.1%' : `${new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 }).format(share)}%`
-}
-
-function CaseAiReview({ incident }: { incident: FeaturedIncident }) {
-  const [answer, setAnswer] = useState<AiResponse | null>(null)
-  const [busy, setBusy] = useState(false)
-  const [error, setError] = useState('')
-
-  useEffect(() => { setAnswer(null); setError(''); setBusy(false) }, [incident.record_id])
-
-  async function requestExplanation() {
-    setBusy(true)
-    setError('')
-    setAnswer(null)
-    try {
-      const { data } = await supabase.auth.getSession()
-      const token = data.session?.access_token
-      if (!token) throw new Error('Your session has expired. Sign in again to request an AI review.')
-      const response = await fetch('/api/assistant', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
-          mode: 'retrospective', incidentId: incident.record_id,
-          question: 'Explain which recorded facts make this incident worth reviewing, what an engineer should verify next, and which conclusions remain unproven. Use only the supplied case evidence.',
-        }),
-      })
-      if (!(response.headers.get('content-type') ?? '').includes('application/json')) {
-        throw new Error('AI review needs the deployed server function. The case evidence below remains available.')
-      }
-      const value: unknown = await response.json().catch(() => {
-        throw new Error('AI review returned an incomplete response. Open the case evidence instead.')
-      })
-      if (!response.ok || !object(value) || typeof value['answer'] !== 'string' ||
-        typeof value['generated'] !== 'boolean' ||
-        !Array.isArray(value['citations']) ||
-        typeof value['limitation'] !== 'string') {
-        throw new Error(object(value) && typeof value['error'] === 'string' ? value['error'] : 'AI review is unavailable. Open the case evidence instead.')
-      }
-      const citations = value['citations'].filter((item): item is AiResponse['citations'][number] =>
-        object(item) && typeof item['label'] === 'string' && item['record_id'] === incident.record_id && item['source_id'] === incident.source_id)
-      if (!citations.length) throw new Error('The explanation did not include a matching source citation. Open the case evidence instead.')
-      setAnswer({ answer: value['answer'], generated: value['generated'], citations, limitation: value['limitation'] })
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'AI review is unavailable.')
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  return <div className="overview-ai">
-    <button type="button" className="overview-ai-button" disabled={busy} onClick={() => { void requestExplanation() }}>
-      {busy ? 'Reviewing source evidence…' : answer ? 'Refresh AI explanation' : 'Generate AI explanation'}
-    </button>
-    <span>Optional · uses the selected incident only</span>
-    {error && <p role="alert" className="overview-ai-message">{error}</p>}
-    {answer && <div className="overview-ai-result" aria-live="polite">
-      <strong>{answer.generated ? 'AI draft · verify against source' : 'Source summary · AI model not used'}</strong>
-      <p>{answer.answer}</p>
-      <p><Link to={`/data/incidents?${new URLSearchParams({record:incident.record_id,field:'Downtime (hrs)'})}#incident-source-record`}>Check Incident Database row {incident.source_row} · recorded downtime ↗</Link> · <Link to={`/data/incidents?${new URLSearchParams({record:incident.record_id,field:'Act. Loss (k US$)'})}#incident-source-record`}>actual loss column ↗</Link></p>
-      <small>{answer.limitation}</small> <Link to={`/dashboard/assistant?incident=${encodeURIComponent(incident.record_id)}`}>Explore this case in Evidence assistant ↗</Link>
-    </div>}
-  </div>
 }
 
 export default function OverviewPage() {
@@ -471,19 +405,21 @@ export default function OverviewPage() {
               <p>Incident Database · row {currentIncident.source_row}. The case link opens the original incident facts and any verified document links. Selection rule: highest actual_loss_kusd; ties by source record ID. Current plant and occurrence-date filters apply.</p>
               <Link to={`/dashboard/investigation/${encodeURIComponent(currentIncident.record_id)}`}>Check row {currentIncident.source_row} and linked evidence →</Link>
             </details>
-            <CaseAiReview key={currentIncident.record_id} incident={currentIncident} />
+            <Link className="overview-analysis-link" to={`/dashboard/investigation/${encodeURIComponent(currentIncident.record_id)}`}>Open investigation and TRACE AI ↗</Link>
           </div>
         </div>}
       </section>}
 
+      {currentIncident && incidentStatus === 'ready' && !invalidDateRange && selected.length > 0 &&
+        <OverviewCaseEvidence key={currentIncident.record_id} incident={currentIncident} />}
+
       <section className="panel overview-coverage" aria-labelledby="overview-coverage-heading">
-        <div className="section-heading"><div><p className="scope-label">{incidentStatus === 'ready' && selected.length > 0 && !invalidDateRange ? '03' : '02'} / SOURCE COVERAGE</p><h2 id="overview-coverage-heading">What evidence is available?</h2></div><Link className="text-link" to="/dashboard/foundation">View source map ↗</Link></div>
+        <div className="section-heading"><div><p className="scope-label">{currentIncident ? '04' : '02'} / SOURCE COVERAGE</p><h2 id="overview-coverage-heading">What evidence is available?</h2></div><Link className="text-link" to="/dashboard/foundation">View source map ↗</Link></div>
         <p className="overview-coverage-intro">These are all-file coverage counts, independent of the incident date filter above. Follow each source for its own time span and units.</p>
         <div className="overview-coverage-grid">
           <div><strong>Incidents</strong><span>{incidentStatus === 'ready' ? `${plantLabels.length} plant labels` : incidentStatus === 'loading' ? 'Checking source coverage…' : 'Coverage unavailable'}</span><Link to={incidentListUrl}>Inspect incidents ↗</Link></div>
           <div><strong>Production + Equipment</strong><span>{assetStatus === 'ready' ? `${assetCount} detailed assets · ${detailedPlantCodes.length} plants` : assetStatus === 'loading' ? 'Checking source coverage…' : 'Coverage unavailable'}</span><span className="overview-coverage-links"><Link to="/dashboard/production">Production ↗</Link><Link to="/dashboard/equipment">Equipment ↗</Link></span></div>
           <div><strong>Root cause reports</strong><span>{rcaStatus === 'ready' ? `${rcaCount} supplied RCA documents` : rcaStatus === 'loading' ? 'Checking source coverage…' : 'Coverage unavailable'}</span><Link to="/dashboard/rca">Inspect RCA ↗</Link></div>
-          <div><strong>Energy forecasting</strong><span>External UCI steel example · 2018</span><Link to="/dashboard/energy">Open forecast lab ↗</Link></div>
         </div>
         {plant && assetStatus === 'ready' && !detailedPlantCodes.includes(plant) &&
           <p className="overview-coverage-note">No detailed Production or Equipment observations were supplied for {plant}. Its incident records remain available.</p>}
@@ -491,7 +427,7 @@ export default function OverviewPage() {
       </section>
 
       {incidentStatus === 'ready' && !invalidDateRange && selected.length > 0 && <section className="panel overview-patterns" aria-labelledby="overview-pattern-heading">
-        <div className="section-heading"><div><p className="scope-label">04 / CONTEXT</p><h2 id="overview-pattern-heading">Patterns behind the totals</h2></div><Link className="text-link" to={incidentListUrl}>Explore selected incidents ↗</Link></div>
+        <div className="section-heading"><div><p className="scope-label">05 / CONTEXT</p><h2 id="overview-pattern-heading">Patterns behind the totals</h2></div><Link className="text-link" to={incidentListUrl}>Explore selected incidents ↗</Link></div>
         <div className="analysis-grid" aria-label="Filtered incident distribution">
           <div className="chart-card"><h3>Incidents · latest 12 calendar months</h3><p className="overview-chart-scope">{whole.format(trendCount)} of {whole.format(totals.count)} incidents in selected scope · {readableMonth(trend[0]![0])} – {readableMonth(trend.at(-1)![0])}</p><div className="bar-list">{trend.map(([month, value]) =>
             <div className="bar-row" key={month}><span>{month}</span><div className="bar-track"><span style={{ width: `${value === 0 ? 0 : Math.max(2, value / Math.max(...trend.map(item => item[1]), 1) * 100)}%` }} /></div><strong>{value}</strong></div>)}</div></div>
