@@ -8,6 +8,13 @@ type DemoScenario = {
   payload: Record<string, unknown>;
 };
 
+// Public, limited shared judge account documented in the repository.
+// Authentication and active-membership checks still apply.
+const judgeDemoCredentials = {
+  email: "judge.synkara2026@example.com",
+  password: "SYNKARA-JUDGE-2026!",
+};
+
 const demoIds = [
   "synthetic-overview-v1",
   "synthetic-replay-v1",
@@ -201,8 +208,7 @@ export default function LoginPage() {
     };
   }, []);
 
-  async function handleSignIn(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function signIn(credentials: { email: string; password: string }, isDemo = false) {
     if (authBusy) return;
 
     setAuthBusy(true);
@@ -210,12 +216,14 @@ export default function LoginPage() {
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
+        email: credentials.email.trim(),
+        password: credentials.password,
       });
 
       if (error || !data.user) {
-        setAuthMessage("Sign-in failed. Check your email and password.");
+        setAuthMessage(isDemo
+          ? "Demo sign-in is temporarily unavailable. Please try again or use the manual sign-in below."
+          : "Sign-in failed. Check your email and password.");
         return;
       }
 
@@ -241,6 +249,11 @@ export default function LoginPage() {
       setPassword("");
       setAuthBusy(false);
     }
+  }
+
+  async function handleSignIn(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await signIn({ email, password });
   }
 
   async function handleSignOut() {
@@ -286,7 +299,7 @@ export default function LoginPage() {
           <section className="judge-panel" aria-labelledby="judge-heading">
             <p className="scope-label">ONE SHARED DEMO ACCOUNT</p>
             <h2 id="judge-heading">Enter the workspace</h2>
-            <p>Use the judge credentials provided by SYNKARA. All demo sections use this same account.</p>
+            <p>Enter the shared judge demo in one click. All demo sections use this same account.</p>
 
             {signedInEmail ? (
               <div className="account-status" role="status">
@@ -305,6 +318,20 @@ export default function LoginPage() {
                 </button>
               </div>
             ) : (
+              <>
+                <div className="login-form">
+                  <button
+                    type="button"
+                    disabled={authBusy}
+                    onClick={() => { void signIn(judgeDemoCredentials, true); }}
+                  >
+                    {authBusy ? "Signing in…" : "Enter judge demo"}
+                    <ArrowIcon />
+                  </button>
+                  <p className="login-judge-note">No email or password entry needed. This shared account has demo access only.</p>
+                </div>
+                <details className="login-judge-note">
+                  <summary>Sign in with email and password instead</summary>
               <form
                 className="login-form"
                 onSubmit={(event) => {
@@ -318,6 +345,7 @@ export default function LoginPage() {
                   autoComplete="username"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
+                  disabled={authBusy}
                   required
                 />
 
@@ -328,6 +356,7 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
+                  disabled={authBusy}
                   required
                 />
 
@@ -337,9 +366,11 @@ export default function LoginPage() {
                 </button>
                 <div className="login-judge-note">
     <strong>Judge access</strong>
-    <p>Enter the demo email and password provided by Team SYNKARA through the official CALIBER submission form. Access instructions are also available in the GitHub repository.</p>
+    <p>The button above opens the shared demo account. Manual login instructions are also available in the GitHub repository.</p>
   </div>
 </form>
+                </details>
+              </>
             )}
 
             {authMessage && (
