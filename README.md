@@ -20,21 +20,24 @@ TRACE-MI connects fragmented incident, production, equipment-condition and RCA r
 
 This is a shared, prototype-only account prepared for CALIBER 2026 evaluation. It is active, has `judge` membership and has no administrator access.
 
-The account can create and review its own demo follow-ups. Demo-generated actions may remain visible until the evaluation environment is reset. Its audit history identifies the shared account, **not an individual judge or independent approver**. View-guide choices change navigation guidance, not permissions. Actions were intentionally cleared before submission.
+The account can create and review its own demo follow-ups. Demo-generated actions may remain visible until the evaluation environment is reset. Its audit history identifies the shared account, **not an individual judge or independent approver**. View-guide choices change navigation guidance, not permissions. The visible action list may change as evaluators use the shared demo account.
 
 ## Recommended three-minute evaluation
 
+This walkthrough follows the recorded demo storyboard. The timings describe an edited screen recording; repeating every form entry and loading step live may take longer.
+
 | Time | Open / do | Evidence to inspect |
 | --- | --- | --- |
-| 0:00–0:25 | **Overview**; inspect scope and filter by plant/date. | Historical exposure, separate actual/potential loss, source links. |
-| 0:25–0:45 | **Problem Tank → KO-3201 · 29 Apr 2026**. | The selected ZCU incident and its investigation. |
-| 0:45–1:15 | **Historical Replay / Rewind asset observations**; select KO-3201 and **22 Apr 2026**. | Weekly `ALARM`, **71.674 micron** radial vibration and **1,372.791 ppm** oil water; no future incident or RCA conclusion. |
-| 1:15–1:40 | Return to retrospective **Investigation**. | **32 h** downtime, **1,584 kUSD actual** and **475.2 kUSD potential** recorded loss; Incident Database row **5**. |
-| 1:40–2:10 | Open **TRACE AI → Review as action draft**. | Evidence references, missing information, abstention and a proposed next check. Review before saving. |
-| 2:10–2:35 | Open the selected **RCA source**. | Team PDF rendition and extracts for orientation; supplied PowerPoint remains authoritative. |
-| 2:35–3:00 | Open **Energy Forecasting Lab**. | External UCI label, four forecast intervals, held-out actual reveal and error distribution. |
+| 0:00–0:20 | **Overview**; inspect the historical scope. | Recorded incidents and downtime; actual and potential loss remain separate. |
+| 0:20–0:37 | Open **KPI definitions → Data Foundation**. | Source-to-KPI mapping, units, observation frequency and known limits. |
+| 0:37–0:53 | Open **Investigate / Problem Tank** and select **KO-3201 · 29 Apr 2026**. | Retrospective queue ranked by recorded actual loss or downtime, not live safety urgency. |
+| 0:53–1:20 | **Rewind asset observations** for KO-3201 to **22 Apr 2026**. | Weekly `ALARM`, **71.674 micron** radial vibration and **1,372.791 ppm** oil water; later incident and RCA evidence excluded. |
+| 1:20–1:48 | Return to recorded incidents and **Inspect evidence**. | **32 h** downtime, **1,584 kUSD actual** and **475.2 kUSD potential** recorded loss; similar incidents are comparators. |
+| 1:48–2:12 | **Analyze accessible evidence**, then inspect **Post-incident RCA material**. | Cited facts, missing information, abstention and a later RCA source for human inspection. |
+| 2:12–2:40 | **Draft an action for this case → Save proposal for review → Review and assign**. | `Needs review` to `Assigned`, responsible function, due date and **Decision and progress history**. |
+| 2:40–2:58 | Open **Energy forecast external** and reveal a held-out result. | External South Korean steel 2018 label, four 15-minute predictions, actuals and error. |
 
-For a longer evaluation, save a clearly labelled demo draft, record the human decision, responsible function, priority rationale and due date, then inspect persisted event history. Demo verification records desk review or simulated work, not physical maintenance.
+For a hands-on evaluation, judges can repeat the action workflow at their own pace. Demo verification records desk review or simulated work, not physical maintenance.
 
 ## The problem and supplied evidence coverage
 
@@ -46,7 +49,7 @@ Fragmented dashboards can show a loss, an alarm and an RCA conclusion without ex
 | Production and Equipment Performance | **5 detailed assets**: PU-2101B, KO-3201, PM-4405B, HE-3301, BL-5702 | 3,600 hourly production rows and 130 weekly condition observations; frequencies and units remain separate. |
 | RCA presentations | **5 supplied decks / 55 source slides** | Historical investigation material; missing supplied RCA does not mean no RCA exists elsewhere. |
 
-See the [data dictionary](docs/data_dictionary.md) and [source audit](docs/data_audit.md). Production `OFF` counts do not replace recorded downtime. Actual and potential loss remain distinct. Duplicate AR/MTO labels are not unique incident identifiers.
+See the [data dictionary](docs/data_dictionary.md) and [source audit](docs/data_audit.md). Weekly Equipment observations come from a different measurement source than hourly Production records; they are not automatic summaries of those records. Production `OFF` counts do not replace recorded downtime. Actual and potential loss remain distinct. Duplicate AR/MTO labels are not unique incident identifiers.
 
 ## How TRACE-MI addresses Case 2
 
@@ -55,6 +58,8 @@ See the [data dictionary](docs/data_dictionary.md) and [source audit](docs/data_
 | **Q1 — Rationalize fragmented dashboards into a governed foundation** | Source registry, field-to-KPI mapping, definitions, units, dataset boundaries and data issues. | [Data Foundation](src/pages/dashboard/DataFoundationPage.tsx), [dictionary](docs/data_dictionary.md), [audit](docs/data_audit.md). |
 | **Q2 — Executive visibility, Energy Forecasting, Similar-Incident Retrieval and AI-based Root Cause Indication** | Overview and Problem Tank lead to investigation; rule-based retrieval explains matching labels; TRACE AI proposes evidence-bound checks; separate Energy Lab demonstrates chronological forecasting. | [Overview](src/pages/dashboard/OverviewPage.tsx), [Investigation/retrieval](src/pages/dashboard/InvestigationPage.tsx), [assistant](api/assistant.js), [forecast evidence](imports/prepared/energy_forecast/forecast_summary.json). |
 | **Q3 — Prioritized human-reviewed follow-up with ownership and tracking** | Editable drafts, recorded decisions, responsible function, priority rationale, due date, progress and result review. | [Draft Composer](src/pages/dashboard/actions/DraftComposer.tsx), [Actions](src/pages/dashboard/ActionsPage.tsx), [action service](src/services/actions.ts). |
+
+**Case 2 scope and gaps:** Historical Overview spans 12 incident plant labels, while detailed Production and Equipment measurements cover five supplied assets. Company electricity and emissions readings were not supplied; the separately labelled Energy Lab demonstrates an external forecasting method, not a company KPI. Problem Tank ranks recorded incidents by actual loss or downtime for retrospective review, not live safety-alert prioritization. Engineers inspect the evidence and own follow-up decisions.
 
 Root cause **indication** is a review aid: the current assistant abstains from certifying a cause. Similarity uses explainable component/type/mechanism matching, not learned failure prediction; a broad equipment-type match alone is weak context.
 
@@ -222,7 +227,8 @@ python scripts/verify_prototype.py
 | Aprila Rayna Syakira | Accounting | 2024 |
 | Ilyasa | Mechatronics & Artificial Intelligence | 2025 |
 
-**Universitas Pendidikan Indonesia**
+**Universitas Pendidikan Indonesia**  
+**Supervisor:** Ichwan Nul Ichsan, S.T., M.T.
 
 ## Competition and source attribution
 
